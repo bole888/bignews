@@ -38,6 +38,104 @@
     </div>
   </div>
 
-</body>
+  <!-- 模态框 -->
+  <div id="myModal" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+              aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title">友情提示</h4>
+        </div>
+        <div class="modal-body">
+          <p></p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" data-dismiss="modal">确认</button>
+        </div>
+      </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+  </div><!-- /.modal -->
 
+</body>
+<script src="./libs/http.js"></script>
+<script src="./js/login.js"></script>
+<script>
+// 入口函数
+$(function(){
+  $('.input_sub').on('click',function(e){
+    e.preventDefault();
+    let username=$('.input_txt').val().trim();
+    let password=$('.input_pass').val().trim();
+    if(username==''||password==''){
+      alert('用户名和密码不能为空');
+      return;
+    };
+    $.ajax({
+      url:'http://localhost:8080/api/v1/admin/user/login',
+      type:'post',
+      dataType:'json',
+      data:{
+        username:username,
+        password:password
+      },
+      success:function(backData){
+        if(backData.code===200){
+          window.location.href='./index.html';
+        }else{
+          alert(backData.msg);
+        }
+      }
+    })
+  })
+})
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* $(function(){
+  $('.input_sub').on('click',function(){
+    e.preventDefault();
+    var username=$('.input_txt').val().trim();
+    var password=$('.input_pass').val().trim();
+    if(username==''||password==''){
+      alert('用户名不能为空哦');
+      return;
+    };
+    ajax({
+      url:'http://localhost:8080/api/v1/admin/user/login',
+      type:'post',
+      data:{
+        username:username,
+        password:password
+      },
+      success:function(backData){
+        if(backData.code===200){
+          window.location.href='./index.html';
+        }else{
+          alert(backData.msg);
+}
+        
+      }
+
+    })
+
+  })
+}) */
+
+
+</script>
 </html>
