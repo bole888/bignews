@@ -59,35 +59,41 @@
 
 </body>
 <script src="./libs/http.js"></script>
-<script src="./js/login.js"></script>
+<!-- <script src="./js/login.js"></script> -->
 <script>
-// 入口函数
 $(function(){
-  $('.input_sub').on('click',function(e){
-    e.preventDefault();
-    let username=$('.input_txt').val().trim();
-    let password=$('.input_pass').val().trim();
-    if(username==''||password==''){
-      alert('用户名和密码不能为空');
-      return;
-    };
-    $.ajax({
-      url:'http://localhost:8080/api/v1/admin/user/login',
-      type:'post',
-      dataType:'json',
-      data:{
-        username:username,
-        password:password
-      },
-      success:function(backData){
-        if(backData.code===200){
+
+$('.input_sub').on('click',function(e){
+   e.preventDefault();
+   let username=$('.input_txt').val().trim();
+   let password=$('.input_pass').val().trim();
+   if(username==''||password==''){
+     $('.modal-body').text('用户名和密码不能为空');
+     $('#myModal').modal();
+     return;
+   }
+   $.ajax({
+     url:window.BigNew.user_login,
+     type:'post',
+     data:{
+      username,
+      password
+     },
+     dataType:'json',
+     success:function(res){
+      $('.modal-body').text(res.msg);
+     $('#myModal').modal();
+       if(res.code===200){
+         window.localStorage.setItem('token',res.token);
+         $('#myModal').on('hidden.bs.modal',function(){
           window.location.href='./index.html';
-        }else{
-          alert(backData.msg);
-        }
-      }
-    })
-  })
+         })
+       }
+
+     }
+
+   })
+})
 })
 
 
@@ -107,35 +113,35 @@ $(function(){
 
 
 /* $(function(){
-  $('.input_sub').on('click',function(){
+  $('.input_sub').on('click',function(e){
     e.preventDefault();
-    var username=$('.input_txt').val().trim();
-    var password=$('.input_pass').val().trim();
+    let username=$('.input_txt').val().trim();
+    let password=$('.input_pass').val().trim();
     if(username==''||password==''){
-      alert('用户名不能为空哦');
+      $('.modal-body').text('用户名和密码不能为空');
+        $('#myModal').modal();
       return;
-    };
-    ajax({
-      url:'http://localhost:8080/api/v1/admin/user/login',
+    }
+    $.ajax({
+      url:window.BigNew.user_login,
       type:'post',
       data:{
-        username:username,
-        password:password
+        username,
+        password
       },
-      success:function(backData){
-        if(backData.code===200){
-          window.location.href='./index.html';
-        }else{
-          alert(backData.msg);
-}
-        
+      dataType:'json',
+      success:function(res){
+        $('.modal-body').text(res.msg);
+        $('#myModal').modal();
+        if(res.code===200){
+          window.localStorage.setItem('token',res.token);
+          $('#myModal').on('hidden.bs.modal',function(e){
+            window.location.href='./index.html';
+          })         
+        }
       }
-
     })
-
   })
-}) */
-
-
+})  */
 </script>
 </html>
